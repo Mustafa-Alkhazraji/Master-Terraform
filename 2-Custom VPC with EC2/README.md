@@ -1,56 +1,55 @@
+````markdown
+# Secure Private EC2 on AWS  
+**Terraform | VPC | SSM**
 
-```markdown
-# Secure Private EC2 with Custom VPC (Terraform)
-
-This project shows how to deploy a **secure AWS EC2 instance** inside a **private subnet** using **Terraform** and AWS best practices.
+A production-style AWS setup that deploys a **private EC2 instance** inside a **custom VPC**, following **security-first** and **Infrastructure as Code** best practices.
 
 The EC2 instance:
 - Has **no public IP**
-- Does **not allow SSH**
-- Is accessed **only via AWS SSM**
+- Allows **no inbound traffic**
+- Is accessed **only via AWS Systems Manager (SSM)**
 
 ---
 
-## Architecture
+## Architecture Overview
 
-```
-
-VPC
+```text
+Custom VPC
 ├── Public Subnet
 │   ├── Internet Gateway
 │   └── NAT Gateway
 └── Private Subnet
-└── EC2 (SSM only)
-
-```
-
----
-
-## What’s Included
-
-- Custom VPC (not default)
-- Public & Private subnets
-- Internet Gateway + NAT Gateway
-- Private EC2 instance
-- IAM role with SSM access
-- Security group with **no inbound rules**
-- Dynamic AMI & AZ discovery
+    └── EC2 Instance (SSM only)
+````
 
 ---
 
-## Security Notes
+## Key Features
 
-- No SSH keys
-- No open inbound ports
-- EC2 can access the internet **outbound only**
-- Access handled via **AWS Systems Manager**
+* Custom VPC (no default resources)
+* Public and private subnet separation
+* NAT Gateway for secure outbound access
+* Private EC2 with zero inbound exposure
+* IAM role with `AmazonSSMManagedInstanceCore`
+* Dynamic AMI and AZ discovery (no hardcoding)
+* Clean, modular Terraform structure
+
+---
+
+## Security Design
+
+* SSH completely disabled
+* No inbound security group rules
+* EC2 isolated in a private subnet
+* Access handled via AWS-native SSM
+
+This design significantly reduces the attack surface and aligns with AWS Well-Architected security principles.
 
 ---
 
 ## Project Structure
 
-```
-
+```text
 .
 ├── main.tf
 ├── variables.tf
@@ -58,28 +57,27 @@ VPC
 ├── outputs.tf
 ├── provider.tf
 └── README.md
-
-````
-
----
-
-## Prerequisites
-
-- AWS CLI configured
-- Terraform `v1.5+`
-- AWS Session Manager Plugin
+```
 
 ---
 
-## How to Deploy
+## Requirements
+
+* AWS CLI configured
+* Terraform `v1.14+`
+* AWS Session Manager Plugin
+
+---
+
+## Deployment
 
 ```bash
 terraform init
 terraform plan
 terraform apply
-````
+```
 
-Connect to EC2:
+Connect to the instance:
 
 ```bash
 aws ssm start-session --target <INSTANCE_ID>
@@ -87,15 +85,15 @@ aws ssm start-session --target <INSTANCE_ID>
 
 ---
 
-## Why This Project
+## Purpose
 
-This is a **realistic AWS setup**, focused on:
+This project demonstrates **real AWS infrastructure design**, focusing on:
 
 * Secure networking
-* Private infrastructure
+* Private workloads
 * Proper IAM usage
-* Clean Terraform code
+* Production-ready Terraform code
 
-Good fit for **DevOps portfolios** and interviews.
+Ideal for **DevOps portfolios** and technical interviews.
 
 ```
