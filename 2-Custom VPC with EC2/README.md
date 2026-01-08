@@ -14,6 +14,7 @@ The EC2 instance:
 ## Architecture Overview
 
 ```text
+
 Custom VPC
 ├── Public Subnet
 │   ├── Internet Gateway
@@ -51,11 +52,13 @@ This design significantly reduces the attack surface and aligns with AWS Well-Ar
 
 ```text
 .
-├── main.tf
+├── ec2.tf
 ├── variables.tf
+├── terraform.tfvars
 ├── iam.tf
 ├── outputs.tf
 ├── provider.tf
+├── version.tf
 └── README.md
 ```
 
